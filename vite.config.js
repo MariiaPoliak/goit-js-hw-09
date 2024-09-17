@@ -5,16 +5,6 @@ import FullReload from 'vite-plugin-full-reload';
 import SortCss from 'postcss-sort-media-queries';
 
 
-export default defineConfig({
-  build: {
-    rollupOptions: {
-      input: {
-        main: '../index.html', // Adjust this path to your main entry point
-      },
-    },
-  },
-});
-
 
 export default defineConfig(({ command }) => {
   return {
