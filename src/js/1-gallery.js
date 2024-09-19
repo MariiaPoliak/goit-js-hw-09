@@ -1,6 +1,7 @@
+"use strict";
 
-
-
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 
 const images = [
   {
@@ -68,40 +69,26 @@ const images = [
   },
 ];
 
+const gallery = document.querySelector(".gallery");
 
-function galleryMarkup(images) {
-  return images
-    .map(image => {
-      return `<li class="gallery-item">
-  <a class="gallery-link" href="${image.original}">
-    <img
-      class="gallery-image"
-      src="${image.preview}"
-      data-source="${image.original}"
-      alt="${image.description}"
-    />
-  </a>
-</li>`;
-    })
-    .join('');
-}
+const galleryItems = images.map(
+    ({ preview, original, description }) => `
+        <li class="gallery-item">
+            <a class="gallery-link" href="${original}">
+                <img
+                    class="gallery-image"
+                    src="${preview}"
+                    alt="${description}"
+                />
+            </a>
+        </li>`
+).join("");
 
-const gallery = document.querySelector('.gallery');
+gallery.insertAdjacentHTML("beforeend", galleryItems);
 
-gallery.insertAdjacentHTML('beforeend', galleryMarkup(images));
 
-const onBigImageClick = event => {
-  event.preventDefault();
-
-  if (event.target.nodeName !== 'IMG') {
-    return;
-  }
-
-  const originalImage = event.target.dataset.source;
-  const instance =
-    basicLightbox.create(`<img src="${originalImage}" width="1112" height="640" alt="${event.target.alt}">
-  `);
-  instance.show();
-};
-
-gallery.addEventListener('click', onBigImageClick);
+const lightbox = new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+    captionDelay: 250,
+    disableRightClick: true
+});
